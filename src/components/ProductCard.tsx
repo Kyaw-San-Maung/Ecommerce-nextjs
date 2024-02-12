@@ -8,6 +8,10 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const isNew =
+    Date.now() - new Date(product.createdAt).getTime() <
+    1000 * 60 * 60 * 24 * 7;
+
   return (
     <Link
       href={"/products/" + product.id}
@@ -15,7 +19,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     >
       <figure>
         <Image
-          src="https://unsplash.com/photos/white-paper-roll-on-white-table-6W8H4puOJB0"
+          src={product.imageUrl}
           alt={product.name}
           width={800}
           height={400}
@@ -23,7 +27,15 @@ export default function ProductCard({ product }: ProductCardProps) {
         />
       </figure>
       <div className="card-body">
-        <h2 className="card-title">{product.name}</h2>
+        <h2 className="card-title">
+          {product.name}{" "}
+          {isNew && (
+            <div className="badge badge-secondary p-2 text-white font-bold">
+              New
+            </div>
+          )}
+        </h2>
+
         <p>{product.description}</p>
         <PriceTag price={product.price} className="" />
       </div>
