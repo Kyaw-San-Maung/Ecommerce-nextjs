@@ -1,7 +1,14 @@
-export default function Home() {
+import ProductCard from "@/components/ProductCard";
+import { prisma } from "@/lib/db/prisma";
+
+export default async function Home() {
+  const products = await prisma.product.findMany({
+    orderBy: { id: "desc" },
+  });
+
   return (
     <div>
-      <h1>Hello This is Home Page</h1>
+      <ProductCard product={products[1]} />
     </div>
   );
 }
